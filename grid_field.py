@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 import numpy as np
 
-def draw(screen, grid, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev):
+def draw(screen, font, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev):
     if rev is True:
         c_n, r_n = r_n, c_n
     for row in range(r_n):
@@ -10,16 +10,20 @@ def draw(screen, grid, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev):
             color = WHITE
             if rev is False:
                 gr = grid[row][column]
+                grn = grid_n[row][column]
             elif rev is True:
                 gr = grid[column][row]
+                grn = grid_n[column][row]
+
             if gr == 1:
                 color = GREEN
             elif gr == 2:
                 color = RED
 
+            text = font.render(str(grn), 1, (0, 0, 0))
             pygame.draw.rect(screen, color, [(MARGIN+WIDTH)*column+MARGIN, (MARGIN+HEIGHT)*row+MARGIN, WIDTH, HEIGHT])
+            screen.blit(text, ((MARGIN+WIDTH)*column+MARGIN, (MARGIN+HEIGHT)*row+MARGIN))
      
-        
     return screen
  
 def check(grid, r, c):
@@ -34,11 +38,11 @@ def check(grid, r, c):
                         bo = False
                     if grid[r+ri][c+ci] != 0 and bo is True:
                         num += 1
-                    if __name__ != "__main__" and bo is True: 
-                        print(grid[r+ri][c+ci], ri, ci, end="\n")
+                    if __name__ == "__main__" and bo is True: 
+                        print(grid[r+ri][c+ci], r+ri, c+ci, end=" "*3)
                 except Exception:pass
     #if __name__ != "__main__":
-        #print()
+    print()
     return num
 
 if __name__ == "__main__":
@@ -48,7 +52,7 @@ if __name__ == "__main__":
     RED = (255, 0, 0)
     
     rev = bool( 1 )
-    
+
     b_val = 3
     s_val1 = 2
     s_val2 = 3
@@ -61,17 +65,20 @@ if __name__ == "__main__":
     #WINDOW_SIZE = WINDOW_SIZE[::-1]
     screen = pygame.display.set_mode(WINDOW_SIZE, RESIZABLE)
     
-    WIDTH = 100*0.95
-    HEIGHT = 100*0.95
+    WIDTH = 100*2
+    HEIGHT = 100*2
     
     c_n = int(WINDOW_SIZE[0]/WIDTH)
     r_n = int(WINDOW_SIZE[1]/HEIGHT)
     print(c_n, r_n)
+
+    font = pygame.font.SysFont("arial", int(min(WIDTH, HEIGHT)))
     
     if rev is True:
         c_n, r_n = r_n, c_n
         
     grid = [ [ 0 for _ in range(c_n)] for _ in range(r_n)]
+    grid_n = [ [ 0 for _ in range(c_n)] for _ in range(r_n)]
     
     pygame.display.set_caption("Array Backed Grid")
     
@@ -84,11 +91,13 @@ if __name__ == "__main__":
     speed = 10
     
     grid[2][1] = 1
-    grid[3][2] = 1
+    '''grid[3][2] = 1
     grid[1][3] = 1
     grid[2][3] = 1
-    grid[3][3] = 1
+    grid[3][3] = 1'''
     
+    grido = grid[:]
+
     clock = pygame.time.Clock()
     
     if free is False:
@@ -133,24 +142,34 @@ if __name__ == "__main__":
 
         
         #clock.tick(speed)
-        screen = draw(screen, grid, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev)
         if pau is False:
-            grido = grid[:]
             for r in range(r_n):
                 for c in range(c_n):
-                    num = check(grido, r, c)
-                    if grido[r][c] == 2:
-                        grid[r][c] = 1
-                    if grido[r][c] == 0 and num == b_val:
-                        grid[r][c] = 2
-                    if grido[r][c] != 0 and (num == s_val1 or num == s_val2):pass
+                    num = check(grid, r, c)
+                    grid_n[r][c] = num
+
+            grido = grid.copy()
+            for r in range(r_n):
+                for c in range(c_n):
+                    num = grid_n[r][c]
+                    #num = check(grido, r, c)
+                    #grid_n[r][c] = num
+                    if grid[r][c] == 2:
+                        grido[r][c] = 1
+                    if grid[r][c] == 0 and num == b_val:
+                        grido[r][c] = 2
+                    if grid[r][c] != 0 and (num == s_val1 or num == s_val2):pass
                     else:
-                        grid[r][c] = 0
-        
+                        grido[r][c] = 0
+
+            grid = grido.copy()
+
+        screen = draw(screen, font, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev)
+
         if free is False and step is True:
             pau = True
             step = False
-            print(np.array(grido))
+            #print(np.array(grido))
             print()
 
         pygame.display.update()
