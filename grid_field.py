@@ -1,5 +1,6 @@
 import pygame
- 
+from pygame.locals import *
+
 def draw(screen, grid, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev):
     if rev is True:
         c_n, r_n = r_n, c_n
@@ -36,7 +37,7 @@ if __name__ == "__main__":
     GREEN = (0, 255, 0)
     RED = (255, 0, 0)
     
-    rev = bool( 0 )
+    rev = bool( 1 )
     
     b_val = 3
     s_val1 = 3
@@ -48,7 +49,6 @@ if __name__ == "__main__":
      
     WINDOW_SIZE = (1540, 801) #(2340, 1080)
     #WINDOW_SIZE = WINDOW_SIZE[::-1]
-    #print(WINDOW_SIZE)
     screen = pygame.display.set_mode(WINDOW_SIZE)
     
     WIDTH = 100*0.75
@@ -67,6 +67,7 @@ if __name__ == "__main__":
     
     done = False
     press = False
+    pau = True
     co = 0
     
     grid[1][0] = 1
@@ -84,6 +85,8 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
+            if event.type == KEYDOWN and event.key == K_SPACE:
+                pau = not pau
             if event.type == pygame.MOUSEBUTTONDOWN:
                 press = True
             elif event.type == pygame.MOUSEBUTTONUP:
@@ -96,20 +99,20 @@ if __name__ == "__main__":
                 #print("Click ", pos, "Grid coordinates: ", int(ro), int(colu))
                 grid[int(colu)][int(ro)] = 1
      
-        clock.tick(1)
+        clock.tick(15)
         screen = draw(screen, grid, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev)
-        for r in range(r_n):
-            for c in range(c_n):
-                num = check(grid, r, c)
-                if grid[r][c] == 0 and num == b_val:
-                    grid[r][c] = 1
-                if grid[r][c] == 1 and (num == s_val1 or num == s_val2):pass
-                else:
-                    grid[r][c] = 0
+        if pau is False:
+            for r in range(r_n):
+                for c in range(c_n):
+                    num = check(grid, r, c)
+                    if grid[r][c] == 0 and num == b_val:
+                        grid[r][c] = 1
+                    if grid[r][c] == 1 and (num == s_val1 or num == s_val2):pass
+                    else:
+                        grid[r][c] = 0
         
         pygame.display.update()
         screen.fill(BLACK)
-            
         co += 1
-    
+
     pygame.quit()
