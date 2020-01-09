@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 import numpy as np
 
-def draw(screen, font, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev):
+def draw(screen, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev, font, dr_txt):
     if rev is True:
         c_n, r_n = r_n, c_n
     for row in range(r_n):
@@ -20,9 +20,10 @@ def draw(screen, font, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev):
             elif gr == 2:
                 color = RED
 
-            text = font.render(str(grn), 1, (0, 0, 0))
             pygame.draw.rect(screen, color, [(MARGIN+WIDTH)*column+MARGIN, (MARGIN+HEIGHT)*row+MARGIN, WIDTH, HEIGHT])
-            screen.blit(text, ((MARGIN+WIDTH)*column+MARGIN, (MARGIN+HEIGHT)*row+MARGIN))
+            if dr_txt is True:
+                text = font.render(str(grn), 1, (0, 0, 0))
+                screen.blit(text, ((MARGIN+WIDTH)*column+MARGIN, (MARGIN+HEIGHT)*row+MARGIN))
      
     return screen
  
@@ -65,8 +66,8 @@ if __name__ == "__main__":
     #WINDOW_SIZE = WINDOW_SIZE[::-1]
     screen = pygame.display.set_mode(WINDOW_SIZE, RESIZABLE)
     
-    WIDTH = 100*0.5
-    HEIGHT = 100*0.5
+    WIDTH = 100*0.25
+    HEIGHT = 100*0.25
     
     c_n = int(WINDOW_SIZE[0]/WIDTH)
     r_n = int(WINDOW_SIZE[1]/HEIGHT)
@@ -87,6 +88,7 @@ if __name__ == "__main__":
     pau = True
     step = False
     free = False
+    dr_txt = False
     co = 0
     speed = 10
     
@@ -133,12 +135,15 @@ if __name__ == "__main__":
                 pos = pygame.mouse.get_pos()
                 colu = pos[0]/(WIDTH+MARGIN)
                 ro = pos[1] / (HEIGHT + MARGIN)
-                #print("Click ", pos, "Grid coordinates: ", int(ro), int(colu))
-                grid[int(colu)][int(ro)] = 1
+                print("Click ", pos, f"Grid coordinates: [{int(ro)}][{int(colu)}]")
+                if grid[int(colu)][int(ro)] == 0:
+                    grid[int(colu)][int(ro)] = 1
+                else:
+                    grid[int(colu)][int(ro)] = 0
 
         
         #clock.tick(speed)
-        screen = draw(screen, font, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev)
+        screen = draw(screen, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev, font, dr_txt)
         if pau is False:
             for r in range(r_n):
                 for c in range(c_n):
