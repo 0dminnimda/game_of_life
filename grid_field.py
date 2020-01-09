@@ -52,7 +52,7 @@ if __name__ == "__main__":
     GREEN = (0, 255, 0)
     RED = (255, 0, 0)
     
-    rev = bool( 1 )
+    rev = bool( 0 )
 
     b_val = 3
     s_val1 = 2
@@ -92,11 +92,11 @@ if __name__ == "__main__":
     co = 0
     speed = 10
     
-    grid[2][1] = 1
-    grid[3][2] = 1
-    grid[1][3] = 1
-    grid[2][3] = 1
-    grid[3][3] = 1
+    gr_po = [[11,2],[10,2],[10,3],[11,3],[10,13],[9,13],[11,13],[12,14],[13,15],[12,16],[11,17],[10,17],[11,18],[10,18],[9,18],
+             [9,17],[10,17],[8,16],[7,15],[8,14],[9,23],[8,23],[9,24],[9,25],[9,26],[8,26],[7,26],[7,25],
+             [7,24],[7,23],[6,24],[6,25],[6,26],[6,27],[5,27],[10,24],[10,25],[10,26],[10,27],[11,27],]
+    for i,j in gr_po:
+        grid[i][j] = 1
     
     grido = grid[:]
 
@@ -134,12 +134,17 @@ if __name__ == "__main__":
             if press is True:
                 pos = pygame.mouse.get_pos()
                 colu = pos[0]/(WIDTH+MARGIN)
-                ro = pos[1] / (HEIGHT + MARGIN)
-                print("Click ", pos, f"Grid coordinates: [{int(ro)}][{int(colu)}]")
-                if grid[int(colu)][int(ro)] == 0:
-                    grid[int(colu)][int(ro)] = 1
+                ro = pos[1]/(HEIGHT+MARGIN)
+                if rev is True:
+                    print(f"[{int(colu)},{int(ro)}],", end='') #Click ", pos, f"Grid coordinates: 
+                    colu, ro = ro, colu
                 else:
-                    grid[int(colu)][int(ro)] = 0
+                    print(f"[{int(ro)},{int(colu)}],", end='')
+
+                if grid[int(ro)][int(colu)] == 0:
+                    grid[int(ro)][int(colu)] = 1
+                else:
+                    grid[int(ro)][int(colu)] = 0
 
         
         #clock.tick(speed)
