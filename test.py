@@ -1,0 +1,12 @@
+from grid_field import check
+from random import randint as ri
+import numpy as np
+c_n = r_n = 3
+grid = [ [ ri(0,1) for _ in range(c_n)] for _ in range(r_n)]
+print(np.array(grid))
+for i in range(3):
+     for j in range(3):
+        num = check(grid, i, j)
+        print()
+        print(num)
+        print()
