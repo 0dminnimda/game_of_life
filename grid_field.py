@@ -90,7 +90,7 @@ if __name__ == "__main__":
     free = False
     dr_txt = False
     co = 0
-    speed = 10
+    speed = 50
     
     gr_po = [[11,2],[10,2],[10,3],[11,3],[10,13],[9,13],[11,13],[12,14],[13,15],[12,16],[11,17],[10,17],[11,18],[10,18],[9,18],
              [9,17],[10,17],[8,16],[7,15],[8,14],[9,23],[8,23],[9,24],[9,25],[9,26],[8,26],[7,26],[7,25],[7,24],[7,23],[6,24],
@@ -114,9 +114,9 @@ if __name__ == "__main__":
                 if event.key == K_c:
                     grid = [ [ 0 for _ in range(c_n)] for _ in range(r_n)]
                 if event.key == K_a:
-                    speed += 1
+                    speed += 10
                 if event.key == K_s:
-                    speed -= 1
+                    speed -= 10
                     if speed < 0:
                         speed = 0
                 if event.key == K_n:
@@ -151,6 +151,8 @@ if __name__ == "__main__":
         run = False
         if free is False and pau is True:
             run = True
+        elif free is False and pau is False:
+            pygame.time.wait(speed)
         if free is True and pau is True:
             run = True
 
