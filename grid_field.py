@@ -26,12 +26,15 @@ def check(grid, r, c):
     num = 0
     for ri in range(-1,2):
         for ci in range(-1,2):
+            bo = True
             if ri == 0 and ci == 0:pass
             else:
                 try:
-                    if grid[r+ri][c+ci] != 0:
+                    if r+ri < 0 or c+ci < 0:
+                        bo = False
+                    if grid[r+ri][c+ci] != 0 and bo is True:
                         num += 1
-                    if __name__ != "__main__": 
+                    if __name__ != "__main__" and bo is True: 
                         print(grid[r+ri][c+ci], ri, ci, end="\n")
                 except Exception:pass
     #if __name__ != "__main__":
