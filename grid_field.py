@@ -38,11 +38,11 @@ def check(grid, r, c):
                         bo = False
                     if grid[r+ri][c+ci] != 0 and bo is True:
                         num += 1
-                    if __name__ == "__main__" and bo is True: 
-                        print(grid[r+ri][c+ci], r+ri, c+ci, end=" "*3)
+                    if __name__ != "__main__" and bo is True: 
+                        print(grid[r+ri][c+ci], r+ri, c+ci, end="\n")
                 except Exception:pass
     #if __name__ != "__main__":
-    print()
+        #print()
     return num
 
 if __name__ == "__main__":
@@ -65,8 +65,8 @@ if __name__ == "__main__":
     #WINDOW_SIZE = WINDOW_SIZE[::-1]
     screen = pygame.display.set_mode(WINDOW_SIZE, RESIZABLE)
     
-    WIDTH = 100*2
-    HEIGHT = 100*2
+    WIDTH = 100*0.5
+    HEIGHT = 100*0.5
     
     c_n = int(WINDOW_SIZE[0]/WIDTH)
     r_n = int(WINDOW_SIZE[1]/HEIGHT)
@@ -91,18 +91,14 @@ if __name__ == "__main__":
     speed = 10
     
     grid[2][1] = 1
-    '''grid[3][2] = 1
+    grid[3][2] = 1
     grid[1][3] = 1
     grid[2][3] = 1
-    grid[3][3] = 1'''
+    grid[3][3] = 1
     
     grido = grid[:]
 
     clock = pygame.time.Clock()
-    
-    if free is False:
-        print(np.array(grid))
-        print()
 
     while not done:
         for event in pygame.event.get():
@@ -142,6 +138,7 @@ if __name__ == "__main__":
 
         
         #clock.tick(speed)
+        screen = draw(screen, font, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev)
         if pau is False:
             for r in range(r_n):
                 for c in range(c_n):
@@ -152,25 +149,17 @@ if __name__ == "__main__":
             for r in range(r_n):
                 for c in range(c_n):
                     num = grid_n[r][c]
-                    #num = check(grido, r, c)
-                    #grid_n[r][c] = num
-                    if grid[r][c] == 2:
-                        grido[r][c] = 1
-                    if grid[r][c] == 0 and num == b_val:
-                        grido[r][c] = 2
-                    if grid[r][c] != 0 and (num == s_val1 or num == s_val2):pass
+                    if grido[r][c] == 2:
+                        grid[r][c] = 1
+                    if grido[r][c] == 0 and num == b_val:
+                        grid[r][c] = 2
+                    if grido[r][c] != 0 and (num == s_val1 or num == s_val2):pass
                     else:
-                        grido[r][c] = 0
-
-            grid = grido.copy()
-
-        screen = draw(screen, font, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev)
+                        grid[r][c] = 0
 
         if free is False and step is True:
             pau = True
             step = False
-            #print(np.array(grido))
-            print()
 
         pygame.display.update()
         screen.fill(BLACK)
