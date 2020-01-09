@@ -66,8 +66,8 @@ if __name__ == "__main__":
     #WINDOW_SIZE = WINDOW_SIZE[::-1]
     screen = pygame.display.set_mode(WINDOW_SIZE, RESIZABLE)
     
-    WIDTH = 100*0.25
-    HEIGHT = 100*0.25
+    WIDTH = 100*0.375
+    HEIGHT = 100*0.375
     
     c_n = int(WINDOW_SIZE[0]/WIDTH)
     r_n = int(WINDOW_SIZE[1]/HEIGHT)
@@ -136,7 +136,7 @@ if __name__ == "__main__":
                 colu = pos[0]/(WIDTH+MARGIN)
                 ro = pos[1]/(HEIGHT+MARGIN)
                 if rev is True:
-                    print(f"[{int(colu)},{int(ro)}],", end=' ') #Click ", pos, f"Grid coordinates: 
+                    print(f"[{int(colu)},{int(ro)}],", end=' ')
                     colu, ro = ro, colu
                 else:
                     print(f"[{int(ro)},{int(colu)}],", end=' ')
@@ -148,8 +148,14 @@ if __name__ == "__main__":
 
         
         #clock.tick(speed)
+        run = False
+        if free is False and pau is True:
+            run = True
+        if free is True and pau is True:
+            run = True
+
         screen = draw(screen, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev, font, dr_txt)
-        if pau is False:
+        if run is False:
             for r in range(r_n):
                 for c in range(c_n):
                     num = check(grid, r, c)
