@@ -83,14 +83,11 @@ if __name__ == "__main__":
     co = 0
     speed = 10
     
-    grid[1][0] = 1
-    grid[1][1] = 1
-    grid[1][2] = 1
-    grid[3][0] = 1
-    grid[3][1] = 1
+    grid[2][1] = 1
     grid[3][2] = 1
-    grid[2][2] = 1
+    grid[1][3] = 1
     grid[2][3] = 1
+    grid[3][3] = 1
     
     clock = pygame.time.Clock()
     
