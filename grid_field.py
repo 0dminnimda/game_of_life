@@ -7,7 +7,7 @@ def draw(screen, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev, font, dr_tx
         c_n, r_n = r_n, c_n
     for row in range(r_n):
         for column in range(c_n):
-            color = WHITE
+            color = BLACK
             if rev is False:
                 gr = grid[row][column]
                 grn = grid_n[row][column]
@@ -20,10 +20,11 @@ def draw(screen, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev, font, dr_tx
             elif gr == 2:
                 color = RED
 
-            pygame.draw.rect(screen, color, [(MARGIN+WIDTH)*column+MARGIN, (MARGIN+HEIGHT)*row+MARGIN, WIDTH, HEIGHT])
+            rec = [(int(MARGIN+WIDTH)*column+MARGIN), (int(MARGIN+HEIGHT)*row+MARGIN), (WIDTH), (HEIGHT)]
+            pygame.draw.rect(screen, color, rec)
             if dr_txt is True:
                 text = font.render(str(grn), 1, (0, 0, 0))
-                screen.blit(text, ((MARGIN+WIDTH)*column+MARGIN, (MARGIN+HEIGHT)*row+MARGIN))
+                screen.blit(text, rec)
      
     return screen
  
@@ -51,6 +52,7 @@ if __name__ == "__main__":
     WHITE = (255, 255, 255)
     GREEN = (0, 255, 0)
     RED = (255, 0, 0)
+    GRAY = (127, 127, 127)
     
     rev = bool( 0 )
 
@@ -58,7 +60,7 @@ if __name__ == "__main__":
     s_val1 = 2
     s_val2 = 3
     
-    MARGIN = 2
+    MARGIN = 0.5
      
     pygame.init()
      
@@ -69,8 +71,8 @@ if __name__ == "__main__":
     WIDTH = 100*0.375
     HEIGHT = 100*0.375
     
-    c_n = int(WINDOW_SIZE[0]/WIDTH)
-    r_n = int(WINDOW_SIZE[1]/HEIGHT)
+    c_n = int(WINDOW_SIZE[0]//WIDTH)
+    r_n = int(WINDOW_SIZE[1]//HEIGHT)
     print(c_n, r_n)
 
     font = pygame.font.SysFont("arial", int(min(WIDTH, HEIGHT)))
@@ -117,6 +119,7 @@ if __name__ == "__main__":
                     speed += 10
                 if event.key == K_s:
                     speed -= 10
+
                     if speed < 0:
                         speed = 0
                 if event.key == K_n:
@@ -180,7 +183,7 @@ if __name__ == "__main__":
             step = False
 
         pygame.display.update()
-        screen.fill(BLACK)
+        screen.fill(GRAY)
         co += 1
 
     pygame.quit()
