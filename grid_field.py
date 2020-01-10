@@ -26,7 +26,7 @@ def draw(screen, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev, font, dr_tx
             rec = [(int(MARGIN+WIDTH)*column+MARGIN), (int(MARGIN+HEIGHT)*row+MARGIN), (WIDTH), (HEIGHT)]
             pygame.draw.rect(screen, color, rec)
             if dr_txt is True:
-                text = font.render(str(grn), 1, (0, 0, 0))
+                text = font.render(str(grn), 1, WHITE)
                 screen.blit(text, rec)
      
     return screen
@@ -66,9 +66,9 @@ if __name__ == "__main__":
     
     rev = bool( 0 )
 
-    b_val = [3, 6, 7, 8]
+    b_val = [3] #[3, 6, 7, 8]
 
-    s_val = [3, 4, 6, 7, 8]
+    s_val = [2, 3] #[3, 4, 6, 7, 8]
     
     MARGIN = 1
      
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     #WINDOW_SIZE = WINDOW_SIZE[::-1]
     screen = pygame.display.set_mode(WINDOW_SIZE, RESIZABLE)
     
-    mul = 0.1875
+    mul = 0.35#1875
     WIDTH = 100*mul
     HEIGHT = 100*mul
     
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     dr_txt = False
     prin = False
     pen = True
-    rand = True
+    rand = False
     co = 0
     speed = 0
     
@@ -125,6 +125,7 @@ if __name__ == "__main__":
     start_grid = grid.copy()
     #print(np.array(start_grid))
     grido = grid.copy()
+
 
     while not done:
         for event in pygame.event.get():
@@ -205,9 +206,9 @@ if __name__ == "__main__":
                     num = grid_n[r][c]
                     if grido[r][c] == 2:
                         grid[r][c] = 1
-                    if grido[r][c] == 0 and n_che(num, b_val): #(num == b_val[i] or num == b_val2 or num == b_val3 or num == b_val4):
+                    if grido[r][c] == 0 and n_che(num, b_val):
                         grid[r][c] = 2
-                    if grido[r][c] != 0 and n_che(num, s_val):pass #(num == s_val1 or num == s_val2 or num == s_val3 or num == s_val4 or num == s_val5):pass
+                    if grido[r][c] != 0 and n_che(num, s_val):pass
                     else:
                         grid[r][c] = 0
 
