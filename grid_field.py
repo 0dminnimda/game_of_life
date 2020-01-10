@@ -50,6 +50,13 @@ def check(grid, r, c):
         #print()
     return num
 
+def n_che(num, ar):
+    bo = False
+    for i in ar:
+        if num == i:
+            bo = True
+    return bo
+
 if __name__ == "__main__":
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
@@ -59,18 +66,11 @@ if __name__ == "__main__":
     
     rev = bool( 0 )
 
-    b_val1 = 3
-    b_val2 = 6
-    b_val3 = 7
-    b_val4 = 8
+    b_val = [3, 6, 7, 8]
 
-    s_val1 = 3
-    s_val2 = 4
-    s_val3 = 6
-    s_val4 = 7
-    s_val5 = 8
+    s_val = [3, 4, 6, 7, 8]
     
-    MARGIN = 0
+    MARGIN = 1
      
     pygame.init()
      
@@ -78,12 +78,13 @@ if __name__ == "__main__":
     #WINDOW_SIZE = WINDOW_SIZE[::-1]
     screen = pygame.display.set_mode(WINDOW_SIZE, RESIZABLE)
     
-    mul = 0.25
+    mul = 0.1875
     WIDTH = 100*mul
     HEIGHT = 100*mul
     
-    c_n = int(WINDOW_SIZE[0]//WIDTH)
-    r_n = int(WINDOW_SIZE[1]//HEIGHT)
+    c_n = (WINDOW_SIZE[0]/WIDTH)
+    r_n = (WINDOW_SIZE[1]/HEIGHT)
+    c_ni, r_ni = int(c_n), int(r_n)
     print(c_n, r_n)
 
     font = pygame.font.SysFont("arial", int(min(WIDTH, HEIGHT)))
@@ -93,13 +94,10 @@ if __name__ == "__main__":
     if rev is True:
         c_n, r_n = r_n, c_n
         
-    grid = [ [ 0 for _ in range(c_n)] for _ in range(r_n)]
-    grid_n = [ [ 0 for _ in range(c_n)] for _ in range(r_n)]
+    grid = [ [ 0 for _ in range(c_ni)] for _ in range(r_ni)]
+    grid_n = [ [ 0 for _ in range(c_ni)] for _ in range(r_ni)]
     
     pygame.display.set_caption("Array Backed Grid")
-    
-    #last_a = (-1, -1)
-    #last_d = (-1, -1)
 
     done = False
     press = False
@@ -114,7 +112,7 @@ if __name__ == "__main__":
     speed = 0
     
     if rand is True:
-        grid = [ [ ri(0,1) for _ in range(c_n)] for _ in range(r_n)]
+        grid = [ [ ri(0,1) for _ in range(c_ni)] for _ in range(r_ni)]
         #grid_n = [ [ ri(0,1) for _ in range(c_n)] for _ in range(r_n)]
 
     gr_po = [[11,2],[10,2],[10,3],[11,3],[10,13],[9,13],[11,13],[12,14],[13,15],[12,16],[11,17],[10,17],[11,18],[10,18],[9,18],
@@ -138,12 +136,12 @@ if __name__ == "__main__":
                 if event.key == K_ESCAPE:
                     done = True
                 if event.key == K_c:
-                    grid = [ [ 0 for _ in range(c_n)] for _ in range(r_n)]
+                    grid = [ [ 0 for _ in range(c_ni)] for _ in range(r_ni)]
                 if event.key == K_r:
                     if rand is True:
-                        grid = [ [ ri(0,1) for _ in range(c_n)] for _ in range(r_n)]
+                        grid = [ [ ri(0,1) for _ in range(c_ni)] for _ in range(r_ni)]
                     else:
-                        grid = [ [ 0 for _ in range(c_n)] for _ in range(r_n)]
+                        grid = [ [ 0 for _ in range(c_ni)] for _ in range(r_ni)]
                         for i,j in gr_po:
                             grid[i][j] = 1
                 if event.key == K_a:
@@ -184,17 +182,6 @@ if __name__ == "__main__":
                         grid[ir][ic] = 0
                 except Exception:pass
 
-                '''if grid[ir][ic] == 0 and last_d != (ir, ic):
-                    grid[ir][ic] = 2
-                    last_a = (ir, ic)
-                elif last_a != (ir, ic):
-                    grid[ir][ic] = 0
-                    last_d = (ir, ic)'''
-
-            '''elif press is False:
-                last_a = (-1, -1)
-                last_d = (-1, -1)'''
-
         
         #clock.tick(speed)
         run = False
@@ -205,22 +192,22 @@ if __name__ == "__main__":
         if free is True and pau is True:
             run = True
 
-        screen = draw(screen, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev, font, dr_txt)
+        screen = draw(screen, grid, grid_n, r_ni, c_ni, MARGIN, WIDTH, HEIGHT, rev, font, dr_txt)
         if run is False:
-            for r in range(r_n):
-                for c in range(c_n):
+            for r in range(r_ni):
+                for c in range(c_ni):
                     num = check(grid, r, c)
                     grid_n[r][c] = num
 
             grido = grid.copy()
-            for r in range(r_n):
-                for c in range(c_n):
+            for r in range(r_ni):
+                for c in range(c_ni):
                     num = grid_n[r][c]
                     if grido[r][c] == 2:
                         grid[r][c] = 1
-                    if grido[r][c] == 0 and (num == b_val1 or num == b_val2 or num == b_val3 or num == b_val4):
+                    if grido[r][c] == 0 and n_che(num, b_val): #(num == b_val[i] or num == b_val2 or num == b_val3 or num == b_val4):
                         grid[r][c] = 2
-                    if grido[r][c] != 0 and (num == s_val1 or num == s_val2 or num == s_val3 or num == s_val4 or num == s_val5):pass
+                    if grido[r][c] != 0 and n_che(num, s_val):pass #(num == s_val1 or num == s_val2 or num == s_val3 or num == s_val4 or num == s_val5):pass
                     else:
                         grid[r][c] = 0
 
