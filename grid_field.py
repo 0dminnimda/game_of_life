@@ -95,6 +95,7 @@ if __name__ == "__main__":
     step = False
     free = False
     dr_txt = False
+    prin = False
     co = 0
     speed = 0
     
@@ -143,10 +144,10 @@ if __name__ == "__main__":
                 pos = pygame.mouse.get_pos()
                 colu = pos[0]/(WIDTH+MARGIN)
                 ro = pos[1]/(HEIGHT+MARGIN)
-                if rev is True:
+                if rev is True and prin is True:
                     print(f"[{int(colu)},{int(ro)}],", end=' ')
                     colu, ro = ro, colu
-                else:
+                elif prin is True:
                     print(f"[{int(ro)},{int(colu)}],", end=' ')
 
                 if grid[int(ro)][int(colu)] == 0 and last_d != (int(ro),int(colu)):
@@ -155,6 +156,9 @@ if __name__ == "__main__":
                 elif last_a != (int(ro),int(colu)):
                     grid[int(ro)][int(colu)] = 0
                     last_d = (int(ro),int(colu))
+            elif press is False:
+                last_a = (-1, -1)
+                last_d = (-1, -1)
 
         
         #clock.tick(speed)
