@@ -1,6 +1,9 @@
 import pygame
 from pygame.locals import *
 import numpy as np
+from random import randint as ri
+#import sys
+#np.set_printoptions(threshold=sys.maxsize)
 
 def draw(screen, grid, grid_n, r_n, c_n, MARGIN, WIDTH, HEIGHT, rev, font, dr_txt):
     if rev is True:
@@ -56,9 +59,16 @@ if __name__ == "__main__":
     
     rev = bool( 0 )
 
-    b_val = 3
-    s_val1 = 2
-    s_val2 = 3
+    b_val1 = 3
+    b_val2 = 6
+    b_val3 = 7
+    b_val4 = 8
+
+    s_val1 = 3
+    s_val2 = 4
+    s_val3 = 6
+    s_val4 = 7
+    s_val5 = 8
     
     MARGIN = 0
      
@@ -78,6 +88,8 @@ if __name__ == "__main__":
 
     font = pygame.font.SysFont("arial", int(min(WIDTH, HEIGHT)))
     
+    clock = pygame.time.Clock()
+
     if rev is True:
         c_n, r_n = r_n, c_n
         
@@ -86,8 +98,8 @@ if __name__ == "__main__":
     
     pygame.display.set_caption("Array Backed Grid")
     
-    last_a = (-1, -1)
-    last_d = (-1, -1)
+    #last_a = (-1, -1)
+    #last_d = (-1, -1)
 
     done = False
     press = False
@@ -96,9 +108,15 @@ if __name__ == "__main__":
     free = False
     dr_txt = False
     prin = False
+    pen = True
+    rand = True
     co = 0
     speed = 0
     
+    if rand is True:
+        grid = [ [ ri(0,1) for _ in range(c_n)] for _ in range(r_n)]
+        #grid_n = [ [ ri(0,1) for _ in range(c_n)] for _ in range(r_n)]
+
     gr_po = [[11,2],[10,2],[10,3],[11,3],[10,13],[9,13],[11,13],[12,14],[13,15],[12,16],[11,17],[10,17],[11,18],[10,18],[9,18],
              [9,17],[10,17],[8,16],[7,15],[8,14],[9,23],[8,23],[9,24],[9,25],[9,26],[8,26],[7,26],[7,25],[7,24],[7,23],[6,24],
              [6,25],[6,26],[6,27],[5,27],[10,24],[10,25],[10,26],[10,27],[11,27],[9,36], [8,36], [8,37], [9,37],]
@@ -106,9 +124,9 @@ if __name__ == "__main__":
     for i,j in gr_po:
         grid[i][j] = 1
     
-    grido = grid[:]
-
-    clock = pygame.time.Clock()
+    start_grid = grid.copy()
+    #print(np.array(start_grid))
+    grido = grid.copy()
 
     while not done:
         for event in pygame.event.get():
@@ -121,11 +139,17 @@ if __name__ == "__main__":
                     done = True
                 if event.key == K_c:
                     grid = [ [ 0 for _ in range(c_n)] for _ in range(r_n)]
+                if event.key == K_r:
+                    if rand is True:
+                        grid = [ [ ri(0,1) for _ in range(c_n)] for _ in range(r_n)]
+                    else:
+                        grid = [ [ 0 for _ in range(c_n)] for _ in range(r_n)]
+                        for i,j in gr_po:
+                            grid[i][j] = 1
                 if event.key == K_a:
                     speed += 10
                 if event.key == K_s:
                     speed -= 10
-
                     if speed < 0:
                         speed = 0
                 if event.key == K_n:
@@ -133,6 +157,8 @@ if __name__ == "__main__":
                     pau = False
                 if event.key == K_f:
                     free = not free
+                if event.key == K_p:
+                    pen = not pen
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 press = True
@@ -149,16 +175,25 @@ if __name__ == "__main__":
                     colu, ro = ro, colu
                 elif prin is True:
                     print(f"[{int(ro)},{int(colu)}],", end=' ')
+                ir, ic = int(ro), int(colu)
 
-                if grid[int(ro)][int(colu)] == 0 and last_d != (int(ro),int(colu)):
-                    grid[int(ro)][int(colu)] = 2
-                    last_a = (int(ro),int(colu))
-                elif last_a != (int(ro),int(colu)):
-                    grid[int(ro)][int(colu)] = 0
-                    last_d = (int(ro),int(colu))
-            elif press is False:
+                try:
+                    if pen is True and grid[ir][ic] == 0:
+                        grid[ir][ic] = 2
+                    elif pen is False and grid[ir][ic] != 0:
+                        grid[ir][ic] = 0
+                except Exception:pass
+
+                '''if grid[ir][ic] == 0 and last_d != (ir, ic):
+                    grid[ir][ic] = 2
+                    last_a = (ir, ic)
+                elif last_a != (ir, ic):
+                    grid[ir][ic] = 0
+                    last_d = (ir, ic)'''
+
+            '''elif press is False:
                 last_a = (-1, -1)
-                last_d = (-1, -1)
+                last_d = (-1, -1)'''
 
         
         #clock.tick(speed)
@@ -183,9 +218,9 @@ if __name__ == "__main__":
                     num = grid_n[r][c]
                     if grido[r][c] == 2:
                         grid[r][c] = 1
-                    if grido[r][c] == 0 and num == b_val:
+                    if grido[r][c] == 0 and (num == b_val1 or num == b_val2 or num == b_val3 or num == b_val4):
                         grid[r][c] = 2
-                    if grido[r][c] != 0 and (num == s_val1 or num == s_val2):pass
+                    if grido[r][c] != 0 and (num == s_val1 or num == s_val2 or num == s_val3 or num == s_val4 or num == s_val5):pass
                     else:
                         grid[r][c] = 0
 
