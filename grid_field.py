@@ -60,7 +60,7 @@ if __name__ == "__main__":
     s_val1 = 2
     s_val2 = 3
     
-    MARGIN = 0.5
+    MARGIN = 0
      
     pygame.init()
      
@@ -68,8 +68,9 @@ if __name__ == "__main__":
     #WINDOW_SIZE = WINDOW_SIZE[::-1]
     screen = pygame.display.set_mode(WINDOW_SIZE, RESIZABLE)
     
-    WIDTH = 100*0.375
-    HEIGHT = 100*0.375
+    mul = 0.25
+    WIDTH = 100*mul
+    HEIGHT = 100*mul
     
     c_n = int(WINDOW_SIZE[0]//WIDTH)
     r_n = int(WINDOW_SIZE[1]//HEIGHT)
@@ -85,6 +86,9 @@ if __name__ == "__main__":
     
     pygame.display.set_caption("Array Backed Grid")
     
+    last_a = (-1, -1)
+    last_d = (-1, -1)
+
     done = False
     press = False
     pau = True
@@ -92,11 +96,12 @@ if __name__ == "__main__":
     free = False
     dr_txt = False
     co = 0
-    speed = 50
+    speed = 0
     
     gr_po = [[11,2],[10,2],[10,3],[11,3],[10,13],[9,13],[11,13],[12,14],[13,15],[12,16],[11,17],[10,17],[11,18],[10,18],[9,18],
              [9,17],[10,17],[8,16],[7,15],[8,14],[9,23],[8,23],[9,24],[9,25],[9,26],[8,26],[7,26],[7,25],[7,24],[7,23],[6,24],
              [6,25],[6,26],[6,27],[5,27],[10,24],[10,25],[10,26],[10,27],[11,27],[9,36], [8,36], [8,37], [9,37],]
+
     for i,j in gr_po:
         grid[i][j] = 1
     
@@ -144,10 +149,12 @@ if __name__ == "__main__":
                 else:
                     print(f"[{int(ro)},{int(colu)}],", end=' ')
 
-                if grid[int(ro)][int(colu)] == 0:
-                    grid[int(ro)][int(colu)] = 1
-                else:
+                if grid[int(ro)][int(colu)] == 0 and last_d != (int(ro),int(colu)):
+                    grid[int(ro)][int(colu)] = 2
+                    last_a = (int(ro),int(colu))
+                elif last_a != (int(ro),int(colu)):
                     grid[int(ro)][int(colu)] = 0
+                    last_d = (int(ro),int(colu))
 
         
         #clock.tick(speed)
